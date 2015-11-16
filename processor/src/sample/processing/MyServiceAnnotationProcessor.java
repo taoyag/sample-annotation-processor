@@ -10,8 +10,11 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
+
+import com.google.auto.common.MoreElements;
 
 @SupportedAnnotationTypes("sample.annotation.MyService")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -26,19 +29,21 @@ public class MyServiceAnnotationProcessor extends AbstractProcessor {
     }
 
     protected void processElement(Element element) {
+        Messager messager = processingEnv.getMessager();
         if (element.getKind() == ElementKind.CLASS) {
-            Messager messager = processingEnv.getMessager();
             if (element.getSimpleName().toString().endsWith("ServiceImpl") == false) {
                 messager.printMessage(Kind.ERROR,
                         "クラス名は 'ServiceImpl' で終える必要があります", element);
             }
-//
-//            TypeElement classElement = (TypeElement) element;
-//            PackageElement packageElement = (PackageElement) classElement.getEnclosingElement();
-//            if (packageElement.getSimpleName().toString().equals("service") == false) {
-//                messager.printMessage(Kind.ERROR,
-//                        "serviceパッケージに配置してください", packageElement);
-//            }
+
+            PackageElement packageElement = MoreElements.getPackage(element);
+            if (packageElement.getQualifiedName().toString().contains("service") == false) {
+                messager.printMessage(Kind.ERROR,
+                        "@MyServiceを付与したクラスはserviceパッケージに配置してください", element);
+            }
+        } else if (element.getKind() == ElementKind.INTERFACE) {
+            messager.printMessage(Kind.ERROR,
+                    "@MyServiceをinterfaceに付与することはできません", element);
         }
     }
 }

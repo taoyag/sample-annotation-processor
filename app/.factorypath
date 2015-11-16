@@ -1,4 +1,7 @@
 <factorypath>
     <factorypathentry kind="PLUGIN" id="org.eclipse.jst.ws.annotations.core" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="WKSPJAR" id="/app/lib/processor.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/processor/lib/auto-common-0.5.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/processor/lib/guava-19.0-rc2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/processor/lib/javapoet-1.4.0.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>
